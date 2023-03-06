@@ -1,7 +1,7 @@
 import * as yup from "yup";
 
 const requiredField = "* This field is required";
-const UseroginFormSchema = yup.object().shape({
+const EngineerLoginFormSchema = yup.object().shape({
   email: yup
     .string()
     .email("Email address must be in format name@emample.com")
@@ -12,4 +12,4 @@ const UseroginFormSchema = yup.object().shape({
     .required(requiredField),
 });
 
-export default UseroginFormSchema;
+export default EngineerLoginFormSchema;

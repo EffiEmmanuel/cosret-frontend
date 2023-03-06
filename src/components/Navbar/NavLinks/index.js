@@ -11,7 +11,7 @@ import {
 
 const { default: NavItem } = require("../NavItem/item");
 
-function NavLinks() {
+function NavLinks(props) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   return (
     <nav className="text-white">

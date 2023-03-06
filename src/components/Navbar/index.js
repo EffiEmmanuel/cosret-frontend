@@ -1,5 +1,3 @@
-import Link from "next/link";
-import { useEffect, useState } from "react";
 const { default: Image } = require("next/image");
 const { default: NavLinks } = require("./NavLinks");
 

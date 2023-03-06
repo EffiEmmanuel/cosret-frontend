@@ -62,3 +62,8 @@ html {
   background-repeat: no-repeat;
   background-size: cover;
 }
+
+.chat-scroll::-webkit-scrollbar {
+  display: none;
+  /* width: 10px; */
+}

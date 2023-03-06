@@ -1,10 +1,13 @@
 import DashboardNav from "@/components/DashboardNav";
-import { UserContext } from "@/pages/dashboard";
-import { useContext, useState } from "react";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../Dashboard";
 
 export default function DashboardNavbar() {
   const [isNavHidden, setIsNavHidden] = useState(true);
+
+  // Get user from user context
+  const { user } = useContext(UserContext);
 
   return (
     <>
@@ -30,7 +33,11 @@ export default function DashboardNavbar() {
         </div>
       </div>
 
-      <DashboardNav isNavHidden={isNavHidden} setIsNavHidden={setIsNavHidden} />
+      <DashboardNav
+        user={user}
+        isNavHidden={isNavHidden}
+        setIsNavHidden={setIsNavHidden}
+      />
     </>
   );
 }

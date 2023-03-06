@@ -20,7 +20,7 @@ export default function Login() {
 
         <section className="w-full text-center my-20 mb-72">
           <HeadingAndSubtext
-            heading="Log in as engineer"
+            heading="Log in as Engineer"
             subtext="Sign in to your account."
           />
           {/* CONTACT US FORM */}

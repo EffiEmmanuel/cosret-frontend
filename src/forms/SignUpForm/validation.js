@@ -4,6 +4,7 @@ const requiredField = "* This field is required";
 const SignUpSchema = yup.object().shape({
   firstName: yup.string().required(requiredField),
   lastName: yup.string().required(requiredField),
+  username: yup.string().required(requiredField),
   accountType: yup.string().required(requiredField),
   email: yup
     .string()

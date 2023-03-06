@@ -72,24 +72,24 @@ function Footer() {
 
           
         </div> */}
-      </div>
-      <div className="mt-10 flex justify-between w-full">
-        <FooterLinks linkHeading="" links={[""]} />
-        <FooterLinks
-          linkHeading="About"
-          links={["About Cosret", "How it works", "Why use Cosret"]}
-        />
-        <FooterLinks
-          linkHeading="Company"
-          links={["FAQs", "Blog", "Careers", "Support"]}
-          isInnerLink={true}
-        />
+        <div className="mt-10 flex justify-between w-full">
+          <FooterLinks linkHeading="" links={[""]} />
+          <FooterLinks
+            linkHeading="About"
+            links={["About Cosret", "How it works", "Why use Cosret"]}
+          />
+          <FooterLinks
+            linkHeading="Company"
+            links={["FAQs", "Blog", "Careers", "Support"]}
+            isInnerLink={true}
+          />
 
-        <FooterLinks
-          linkHeading="Legal"
-          links={["Privacy Policy", "Terms of Use", "Security", "KYC Policy"]}
-          isInnerLink={true}
-        />
+          <FooterLinks
+            linkHeading="Legal"
+            links={["Privacy Policy", "Terms of Use", "Security", "KYC Policy"]}
+            isInnerLink={true}
+          />
+        </div>
       </div>
     </footer>
   );

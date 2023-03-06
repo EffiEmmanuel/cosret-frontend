@@ -4,7 +4,7 @@ import Footer from "../Footer";
 
 function Layout(props) {
   return (
-    <div className="">
+    <div className="scrollbar-thin">
       {/* NAVBAR */}
       {!props.isDashboard && <Navbar />}
       <main className="pt-32 min-h-screen">{...props.children}</main>

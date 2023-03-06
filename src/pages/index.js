@@ -12,8 +12,6 @@ import FAQSection from "@/components/FAQSection";
 import AvailableGlobally from "@/components/MeetTheTeam";
 import MeetTheTeam from "@/components/MeetTheTeam";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   const scrollRef = useRef(null);
 
