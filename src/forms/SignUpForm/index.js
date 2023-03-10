@@ -235,7 +235,7 @@ function SignUpForm() {
         </div>
         <p className="text-left mt-20 lg:text-center text-sm">
           Already have an account?{" "}
-          <Link className="font-semibold" href="/accounts/login">
+          <Link className="font-semibold" href="/login">
             Log in
           </Link>
         </p>
