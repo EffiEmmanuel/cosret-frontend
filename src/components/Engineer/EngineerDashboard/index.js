@@ -60,7 +60,7 @@ function EngineerDashboard(props) {
         .catch((err) => {
           //   toast.error(err.response.data.message);
           console.log("ERROR THERE:", err);
-          //   Router.push("/login");
+          Router.push("/login");
           toast.error(
             "Session expired. Please log in to continue to your dashboard."
           );

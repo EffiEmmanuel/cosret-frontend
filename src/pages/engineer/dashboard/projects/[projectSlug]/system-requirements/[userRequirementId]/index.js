@@ -1,7 +1,7 @@
 import DashboardHome from "@/components/DasboardHome";
 import Dashboard from "@/components/Dashboard";
 import EngineerDashboard from "@/components/Engineer/EngineerDashboard";
-import EngineerProjectDetail from "@/components/Engineer/EngineerProjectDetail";
+import EngineerSystemRequirements from "@/components/Engineer/EngineerProjectDetail/EngineerSystemRequirements";
 import ProjectDetail from "@/components/ProjectDetail";
 import axios from "axios";
 import { useRouter } from "next/router";
@@ -14,7 +14,7 @@ function ProjectDetails() {
 
   // Make API call to get project by id
   useEffect(() => {
-    async function getProjectById() {
+    async function getProjectBySlug() {
       await axios
         .get(
           `${process.env.NEXT_PUBLIC_BASE_URL_API}/projects/slug/${projectSlug}`
@@ -28,14 +28,14 @@ function ProjectDetails() {
         });
     }
 
-    getProjectById();
+    getProjectBySlug();
     console.log("PROJECT SLUG:", projectSlug);
   }, [projectSlug]);
 
   return (
     <EngineerDashboard>
       <div></div>
-      <EngineerProjectDetail project={project} />
+      <EngineerSystemRequirements project={project} />
     </EngineerDashboard>
   );
 }
