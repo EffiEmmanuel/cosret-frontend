@@ -23,13 +23,15 @@ function UserLoginForm() {
       })
       .then((res) => {
         console.log(res);
-        toast.success(res.data.message);
-        localStorage.setItem("token", res.data.data);
+        toast.success(res?.data?.message);
+        localStorage.setItem("token", res?.data?.data);
         Router.push("/user/dashboard");
         setIsLoading(true);
       })
       .catch((err) => {
-        toast.error(err.response.data.message);
+        toast.error(
+          err.response.data.message ? err.response.data.message : err.message
+        );
         setIsLoading(true);
       });
   };
