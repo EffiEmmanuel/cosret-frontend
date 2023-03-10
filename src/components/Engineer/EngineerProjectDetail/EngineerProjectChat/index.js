@@ -8,7 +8,8 @@ import { io } from "socket.io-client";
 import { EngineerContext } from "../../EngineerDashboard";
 
 // SOCKET.IO CONFIG
-const socket = io.connect(`${process.env.NEXT_PUBLIC_APP_SERVER_URL}`);
+// const socket = io.connect(`${process.env.NEXT_PUBLIC_APP_SERVER_URL}`);
+const socket = io.connect("https://www.corset-backend.vercel.app");
 
 export default function EngineerProjectChat(props) {
   const { engineer } = useContext(EngineerContext);

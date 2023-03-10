@@ -8,7 +8,8 @@ import { UserContext } from "../Dashboard";
 import Chat from "./Chat";
 
 // SOCKET.IO CONFIG
-const socket = io.connect(`${process.env.NEXT_PUBLIC_APP_SERVER_URL}`);
+// const socket = io.connect(`${process.env.NEXT_PUBLIC_APP_SERVER_URL}`);
+const socket = io.connect("https://www.corset-backend.vercel.app");
 
 export default function ProjectChat(props) {
   const { user } = useContext(UserContext);
