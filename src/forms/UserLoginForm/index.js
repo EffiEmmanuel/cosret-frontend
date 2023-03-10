@@ -17,10 +17,19 @@ function UserLoginForm() {
     // TO-DO: Send API request to server
     await axios
       //   .post(`${process.env.NEXT_PUBLIC_BASE_URL_API}/users/login`, {
-      .post(`https://cosret-backend.vercel.app/api/users/login`, {
-        email: values.email,
-        password: values.password,
-      })
+      .post(
+        `https://cosret-backend.vercel.app/api/users/login`,
+        {
+          email: values.email,
+          password: values.password,
+        },
+        {
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Content-Type": "application/json",
+          },
+        }
+      )
       .then((res) => {
         console.log(res);
         toast.success(res?.data?.message);
