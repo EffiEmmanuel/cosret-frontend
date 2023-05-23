@@ -67,3 +67,9 @@ html {
   display: none;
   /* width: 10px; */
 }
+
+@media print {
+  .document {
+    border: none
+  }
+}

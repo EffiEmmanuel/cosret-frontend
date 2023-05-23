@@ -4,8 +4,10 @@ import { FaBug, FaHeadset, FaHome, FaPlus, FaSignOutAlt } from "react-icons/fa";
 import effi from "../../../public/images/effi.jpg";
 import { useContext } from "react";
 import { UserContext } from "@/pages/user/dashboard";
+import { useRouter } from "next/router";
 
 export default function DashboardNav({ isNavHidden, user }) {
+  const router = useRouter()
   return (
     <nav
       className={`bg-cosretBlue-300 md:w-1/4 lg:w-1/5 z-10 fixed w-2/4 min-h-screen lg:block text-black px-10 pt-7 top-0 left-0 ${
@@ -61,9 +63,9 @@ export default function DashboardNav({ isNavHidden, user }) {
         </li>
         {/* CATEGORY */}
         <li className="my-11">
-          <p className="text-xs text-gray-500 uppercase">Chat Rooms</p>
+          {/* <p className="text-xs text-gray-500 uppercase">Chat Rooms</p> */}
           {/* ITEMS */}
-          <ul className="mt-3">
+          {/* <ul className="mt-3">
             <li className="ml-7">
               <Link href="/" className="flex align-middle gap-2">
                 <Image
@@ -87,7 +89,7 @@ export default function DashboardNav({ isNavHidden, user }) {
                 <span className="my-auto text-sm">Sarah Rice</span>
               </Link>
             </li>
-          </ul>
+          </ul> */}
         </li>
 
         {/* CATEGORY */}
@@ -96,13 +98,13 @@ export default function DashboardNav({ isNavHidden, user }) {
           {/* ITEMS */}
           <ul className="mt-3">
             <li className="ml-7">
-              <Link href="/" className="flex align-middle gap-2">
+              <Link href="mailto@effiemmanuel.n@gmail.com" className="flex align-middle gap-2">
                 <FaHeadset size={16} className="my-auto" />
                 <span className="my-auto text-sm">Support</span>
               </Link>
             </li>
             <li className="ml-7">
-              <Link href="/" className="flex align-middle gap-2 mt-4">
+              <Link href="mailto@effiemmanuel.n@gmail.com" className="flex align-middle gap-2 mt-4">
                 <FaBug size={16} className="my-auto" />
                 <span className="my-auto text-sm">Report a problem</span>
               </Link>
@@ -116,10 +118,13 @@ export default function DashboardNav({ isNavHidden, user }) {
           {/* ITEMS */}
           <ul className="mt-3">
             <li className="ml-7">
-              <Link href="/" className="flex align-middle gap-2 mt-4">
+              <span onClick={() => {
+                localStorage.removeItem('token')
+                router.push('/login')
+              }} className="flex align-middle gap-2 mt-4">
                 <FaSignOutAlt size={16} className="my-auto" />
                 <span className="my-auto">Log out</span>
-              </Link>
+              </span>
             </li>
           </ul>
         </li>

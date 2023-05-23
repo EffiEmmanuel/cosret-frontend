@@ -12,21 +12,17 @@ import empty from "../../../../public/images/empty.png";
 import Modal from "react-modal";
 import AssignEngineerForm from "@/forms/Admin/AssignEngineerForm";
 import { AdminContext } from "../AdminDashboard";
+import Projects from "@/pages/admin/dashboard/projects";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
 
-export default function AdminAssignEngineer(props) {
+export default function AdminProjects(props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentItem, setCurrentItem] = useState();
 
-  const {
-    engineers,
-    fetchEngineers,
-    fetchProject,
-    fetchProjectsPendingAssignment,
-    projectsPendingAssignment,
-  } = useContext(AdminContext);
+  const { projects, setProjects } = useContext(AdminContext);
+  console.log("PPP:", projects);
 
   function openModal() {
     setIsModalOpen(true);
@@ -48,45 +44,31 @@ export default function AdminAssignEngineer(props) {
       setIsSearching(false);
     }
   }, [search]);
+
+  //   ACTIONS
+  async function deleteProject(project) {
+    await axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_BASE_URL_API}/projects/${project?._id}`
+      )
+      .then((res) => {
+        console.log("DELETE UR RES:", res.data);
+        setProjects(res.data.data);
+      })
+      .catch((err) => {
+        console.log("DELETE UR ERR:", err);
+      });
+  }
+
   return (
     <>
       <div>
-        <Modal
-          isOpen={isModalOpen}
-          onRequestClose={closeModal}
-          className="bg-red-500 max-w-lg mx-auto mt-[120px]"
-        >
-          <div className="h-[400px] shadow-lg p-14 bg-white text-center">
-            <h2 className="font-semibold text-lg">Assign Engineer</h2>
-            <div className="mt-5 text-left">
-              <p className="mt-3">
-                <strong>Project Title</strong>: {currentItem?.name}
-              </p>
-              <p className="mt-3">
-                <strong>Project Owner</strong>: {currentItem?.owner?.lastName}{" "}
-                {currentItem?.owner?.firstName}
-              </p>
-              <p className="mt-3">
-                <strong>Time Created</strong>:{" "}
-                <ReactTimeAgo date={currentItem?.createdAt} locale="en-US" />
-              </p>
-            </div>
-            <div className="mt-5 text-left">
-              <AssignEngineerForm
-                fetchProjectsPendingAssignment={fetchProjectsPendingAssignment}
-                project={currentItem}
-                engineers={engineers}
-              />
-            </div>
-          </div>
-        </Modal>
         {/* OVERVIEW */}
         <div className="mt-20">
           <div>
             <div className="flex justify-between align-middle lg:justify-start lg:gap-x-10 border-b-[.5px] pb-3">
               <h1 className="text-xl font-bold my-auto">
-                Projects Pending Assignment -{" "}
-                {projectsPendingAssignment?.length}
+                Projects - {projects?.length}
               </h1>
 
               <input
@@ -95,12 +77,12 @@ export default function AdminAssignEngineer(props) {
                 onChange={(e) => {
                   setSearch(e.target.value);
                   setIsSearching(true);
-                  const result = projectsPendingAssignment?.filter((project) =>
+                  const result = projects?.filter((project) =>
                     project?.name?.includes(search)
                   );
                   setSearchResults(result);
                 }}
-                placeholder="Search by project name"
+                placeholder="Search by name"
                 className="my-auto w-full md:w-1/3 h-16 bg-cosretBlue-300 px-8 text-black text-sm mt-7 rounded-lg rounded-bl-lg focus:outline-none"
               />
             </div>
@@ -110,17 +92,23 @@ export default function AdminAssignEngineer(props) {
               <div className="w-full overflow-x-scroll lg:overflow-hidden">
                 <div className="flex justify-between gap-x-10 min-w-[750px]">
                   <span className="text-xs w-[187px] text-gray-400 uppercase">
-                    Title
+                    Project Title
+                  </span>
+                  <span className="text-xs w-[187px] line-clamp-1 text-gray-400 uppercase">
+                    description
                   </span>
                   <span className="text-xs w-[187px] text-gray-400 uppercase">
                     Owner
                   </span>
                   <span className="text-xs w-[187px] text-gray-400 uppercase">
-                    Time Created
+                    Completed
+                  </span>
+                  <span className="text-xs w-[187px] text-gray-400 uppercase">
+                    Actions
                   </span>
                 </div>
 
-                {projectsPendingAssignment?.length === 0 && (
+                {projects?.length === 0 && (
                   <div className="w-full mx-auto mt-10">
                     <Image
                       src={empty}
@@ -129,8 +117,7 @@ export default function AdminAssignEngineer(props) {
                       width={150}
                     />
                     <h3 className="text-center">
-                      Nothing here, all projects have been assigned a
-                      requirement engineer.
+                      Hang tight, no projects on COSRET just yet.
                     </h3>
                   </div>
                 )}
@@ -144,34 +131,42 @@ export default function AdminAssignEngineer(props) {
                       width={150}
                     />
                     <h3 className="text-center">
-                      No projects match your search.
+                      No project names match your search.
                     </h3>
                   </div>
                 )}
 
                 {!isSearching || search === ""
-                  ? projectsPendingAssignment?.map((project) => (
+                  ? projects?.map((project) => (
                       <div
-                        onClick={() => {
-                          setCurrentItem(project);
-                          fetchProject(project._id);
-                          fetchEngineers();
-                          setIsModalOpen(true);
-                        }}
+                        // onClick={() => {
+                        //   setCurrentItem(project);
+                        //   //   fetchProject(project._id);
+                        //   //   fetchprojects();
+                        //   //   setIsModalOpen(true);
+                        // }}
                         key={project._id}
-                        className="flex cursor-pointer gap-x-10 mt-7 border-b-[.5px] pb-3 justify-between min-w-[750px]"
+                        className="flex gap-x-10 mt-7 border-b-[.5px] pb-3 justify-between min-w-[750px]"
                       >
                         <span className="text-sm w-[187px]">
                           {project.name}
                         </span>
                         <span className="text-sm w-[187px]">
-                          {project.owner.lastName} {project.owner.firstName}
+                          {project.description}
                         </span>
                         <span className="text-sm w-[187px]">
-                          <ReactTimeAgo
-                            date={project.createdAt}
-                            locale="en-US"
-                          />
+                          {project.owner.firstName} {project.owner.lastName}
+                        </span>
+                        <span className="text-sm w-[187px]">
+                          {project.isComplete ? 'Yes' : 'No'}
+                        </span>
+                        <span className="text-sm w-[187px]">
+                          <button
+                            onClick={() => deleteProject(project)}
+                            className="ml-5"
+                          >
+                            <FaTrashAlt size={14} className="text-red-500" />
+                          </button>
                         </span>
                       </div>
                     ))
@@ -180,26 +175,31 @@ export default function AdminAssignEngineer(props) {
                 {isSearching
                   ? searchResults?.map((project) => (
                       <div
-                        onClick={() => {
-                          setCurrentItem(project);
-                          fetchProject(project._id);
-                          fetchEngineers();
-                          setIsModalOpen(true);
-                        }}
+                        // onClick={() => {
+                        //   setCurrentItem(project);
+                        // }}
                         key={project._id}
-                        className="flex cursor-pointer gap-x-10 mt-7 border-b-[.5px] pb-3 justify-between min-w-[750px]"
+                        className="flex gap-x-10 mt-7 border-b-[.5px] pb-3 justify-between min-w-[750px]"
                       >
                         <span className="text-sm w-[187px]">
                           {project.name}
                         </span>
                         <span className="text-sm w-[187px]">
-                          {project.owner.lastName} {project.owner.firstName}
+                          {project.description}
                         </span>
                         <span className="text-sm w-[187px]">
-                          <ReactTimeAgo
-                            date={project.createdAt}
-                            locale="en-US"
-                          />
+                          {project.owner}
+                        </span>
+                        <span className="text-sm w-[187px]">
+                          {project.isComplete}
+                        </span>
+                        <span className="text-sm w-[187px]">
+                          <button
+                            onClick={() => deleteProject(project)}
+                            className="ml-5"
+                          >
+                            <FaTrashAlt size={14} className="text-red-500" />
+                          </button>
                         </span>
                       </div>
                     ))

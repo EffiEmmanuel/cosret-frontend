@@ -15,6 +15,7 @@ export const UserContext = createContext();
 
 function Dashboard(props) {
   const [user, setUser] = useState();
+  const [projects, setProjects] = useState();
 
   //   Current page
   const [currentPage, setCurrectPage] = useState("home");
@@ -50,8 +51,9 @@ function Dashboard(props) {
               `${process.env.NEXT_PUBLIC_BASE_URL_API}/users/${res.data.data._id}`
             )
             .then((res) => {
-              //   console.log("SECOND RES:", res.data);
+                console.log("SECOND RES:", res.data);
               setUser(res.data.data);
+              setProjects(res.data.data.projects);
             })
             .catch((err) => {});
         })
@@ -68,7 +70,7 @@ function Dashboard(props) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ user, currentPage, setTheCurrentPage }}>
+    <UserContext.Provider value={{ user, projects, setProjects, currentPage, setTheCurrentPage }}>
       <ToastContainer />
       <DashboardNavbar />
       {/* BODY */}

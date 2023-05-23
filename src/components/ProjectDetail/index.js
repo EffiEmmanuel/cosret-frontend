@@ -82,6 +82,7 @@ export default function ProjectDetail(props) {
 
       {/* OVERVIEW */}
       {isOverview && <ProjectOverview project={props.project} />}
+      {/* {isOverview && <UserRequirements project={props.project} />} */}
       {isUserRequirements && <UserRequirements project={props.project} />}
       {isSystemRequirements && <SystemRequirements project={props.project} />}
       {isChat && <ProjectChat project={props.project} />}

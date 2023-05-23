@@ -68,10 +68,10 @@ export default function EngineerDashboardNav({ isNavHidden, engineer }) {
           </ul>
         </li>
         {/* CATEGORY */}
-        <li className="my-11">
+        {/* <li className="my-11">
           <p className="text-xs text-gray-500 uppercase">Chat Rooms</p>
           {/* ITEMS */}
-          <ul className="mt-3">
+          {/* <ul className="mt-3">
             <li className="ml-7">
               <Link href="/" className="flex align-middle gap-2">
                 <Image
@@ -95,8 +95,8 @@ export default function EngineerDashboardNav({ isNavHidden, engineer }) {
                 <span className="my-auto text-sm">Sarah Rice</span>
               </Link>
             </li>
-          </ul>
-        </li>
+          </ul> */}
+        {/* </li> */}
 
         {/* CATEGORY */}
         <li className="my-11">
@@ -104,13 +104,13 @@ export default function EngineerDashboardNav({ isNavHidden, engineer }) {
           {/* ITEMS */}
           <ul className="mt-3">
             <li className="ml-7">
-              <Link href="/" className="flex align-middle gap-2">
+              <Link href="mailto@effiemmanuel.n@gmail.com" className="flex align-middle gap-2">
                 <FaHeadset size={16} className="my-auto" />
                 <span className="my-auto text-sm">Support</span>
               </Link>
             </li>
             <li className="ml-7">
-              <Link href="/" className="flex align-middle gap-2 mt-4">
+              <Link href="mailto@effiemmanuel.n@gmail.com" className="flex align-middle gap-2 mt-4">
                 <FaBug size={16} className="my-auto" />
                 <span className="my-auto text-sm">Report a problem</span>
               </Link>

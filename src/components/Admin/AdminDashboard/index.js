@@ -17,6 +17,8 @@ function AdminDashboard(props) {
   const [admin, setAdmin] = useState();
   const [statistics, setStatistics] = useState();
   const [engineers, setEngineers] = useState();
+  const [users, setUsers] = useState();
+  const [projects, setProjects] = useState();
   const [projectsPendingAssignment, setProjectsPendingAssignment] = useState(
     []
   );
@@ -63,6 +65,30 @@ function AdminDashboard(props) {
       .then((res) => {
         console.log("ENGINEERS:", res.data.data);
         setEngineers(res.data.data);
+      })
+      .catch((err) => {
+        console.log("ENGINEERS Error:", err);
+      });
+  }
+
+  async function fetchUsers() {
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL_API}/users`)
+      .then((res) => {
+        console.log("USERS:", res.data.data);
+        setUsers(res.data.data);
+      })
+      .catch((err) => {
+        console.log("ENGINEERS Error:", err);
+      });
+  }
+
+  async function fetchProjects() {
+    await axios
+      .get(`${process.env.NEXT_PUBLIC_BASE_URL_API}/projects`)
+      .then((res) => {
+        console.log("PROJECTS:", res.data.data);
+        setProjects(res.data.data);
       })
       .catch((err) => {
         console.log("ENGINEERS Error:", err);
@@ -128,6 +154,9 @@ function AdminDashboard(props) {
   useEffect(() => {
     getStatistics();
     fetchProjectsPendingAssignment();
+    fetchEngineers()
+    fetchUsers()
+    fetchProjects()
   }, []);
 
   return (
@@ -137,11 +166,16 @@ function AdminDashboard(props) {
         currentPage,
         statistics,
         engineers,
+        users,
+        projects,
         projectsPendingAssignment,
         fetchProjectsPendingAssignment,
         fetchProject,
         setTheCurrentPage,
         fetchEngineers,
+        setUsers,
+        setEngineers,
+        setProjects
       }}
     >
       <ToastContainer />

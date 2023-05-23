@@ -25,13 +25,14 @@ function UserLoginForm() {
         toast.success(res?.data?.message);
         localStorage.setItem("token", res?.data?.data);
         Router.push("/user/dashboard");
-        setIsLoading(true);
+        setIsLoading(false);
       })
       .catch((err) => {
+        console.log('ERROR:', err)
         toast.error(
           err.response.data.message ? err.response.data.message : err.message
         );
-        setIsLoading(true);
+        setIsLoading(false);
       });
   };
 

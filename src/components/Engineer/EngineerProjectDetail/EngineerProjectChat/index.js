@@ -8,8 +8,8 @@ import { io } from "socket.io-client";
 import { EngineerContext } from "../../EngineerDashboard";
 
 // SOCKET.IO CONFIG
-// const socket = io.connect(`${process.env.NEXT_PUBLIC_APP_SERVER_URL}`);
-const socket = io.connect("https://www.corset-backend.vercel.app");
+const socket = io.connect(`${process.env.NEXT_PUBLIC_APP_SERVER_URL}`);
+// const socket = io.connect("https://www.corset-backend.vercel.app");
 
 export default function EngineerProjectChat(props) {
   const { engineer } = useContext(EngineerContext);
@@ -38,6 +38,7 @@ export default function EngineerProjectChat(props) {
   // Connect to Web Socket here to enable chat functionality
   function joinChatRoom() {
     socket.emit("join-room", `${props?.project?.chatRoom}`);
+    console.log("CHATROOM:", props?.project);
   }
   // Use websocket to send message
   function sendMessage() {
@@ -95,7 +96,7 @@ export default function EngineerProjectChat(props) {
       dataFetchRef.current = true;
       updateMessages(data);
     });
-  }, [socket]);
+  },[socket]);
 
   return (
     <>

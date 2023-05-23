@@ -22,9 +22,9 @@ export default function EngineerDashboardHome() {
           {engineer?.projectsAssignedTo.map((project) => (
             <div key={project._id}>
               <ValueCard
-                image={effi}
-                title="Babcock UMIS"
-                description="This project is for Babcock's university management system."
+                title={project.name}
+                description={project.description}
+                slug={project?.slug}
               />
             </div>
           ))}

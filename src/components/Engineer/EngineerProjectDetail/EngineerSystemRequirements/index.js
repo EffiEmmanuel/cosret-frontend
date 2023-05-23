@@ -25,6 +25,7 @@ import { useContext } from "react";
 import { EngineerContext } from "../../EngineerDashboard";
 import { useRouter } from "next/router";
 import AddSystemRequirementForm from "@/forms/AddSystemRequirementForm";
+import AddSNonFunctionalRequirementForm from "@/forms/AddNonFunctionalRequirementForm";
 
 TimeAgo.addDefaultLocale(en);
 TimeAgo.addLocale(ru);
@@ -46,16 +47,23 @@ export default function EngineerSystemRequirements(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   //   Modal Configs
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isNFRModalOpen, setIsNFRModalOpen] = useState(false);
+  const [isFRModalOpen, setIsFRModalOpen] = useState(false);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
   //   useEffect(() => {
   //     Modal.setAppElement("#appElement");
   //   }, []);
-  function openModal() {
-    setIsModalOpen(true);
+  function openNFRModal() {
+    setIsNFRModalOpen(true);
   }
-  function closeModal() {
-    setIsModalOpen(false);
+  function closeNFRModal() {
+    setIsNFRModalOpen(false);
+  }
+  function openFRModal() {
+    setIsFRModalOpen(true);
+  }
+  function closeFRModal() {
+    setIsFRModalOpen(false);
   }
   //   TO-DO: REFACTOR CODE TO ENABLE SINGLE HANDLING OF MODALS
   function openDetailModal() {
@@ -69,7 +77,7 @@ export default function EngineerSystemRequirements(props) {
   async function fetchSystemRequirements(userRequirementId) {
     await axios
       .get(
-        `${process.env.NEXT_PUBLIC_BASE_URL_API}/user-requirements/${userRequirementId}/system-requirements?userId=${user?._id}&projectId=${props?.project._id}`
+        `${process.env.NEXT_PUBLIC_BASE_URL_API}/user-requirements/${userRequirementId}/functional-requirements?userId=${user?._id}&projectId=${props?.project._id}`
       )
       .then((res) => {
         console.log("SR:", res.data.data);
@@ -129,11 +137,26 @@ export default function EngineerSystemRequirements(props) {
   async function deleteSystemRequirement(systemRequirementId) {
     await axios
       .delete(
-        `${process.env.NEXT_PUBLIC_BASE_URL_API}/system-requirements/${systemRequirementId}?userId=${user?._id}&projectId=${props?.project._id}`
+        `${process.env.NEXT_PUBLIC_BASE_URL_API}/functional-requirements/${systemRequirementId}?engineerId=${engineer?._id}&projectId=${props?.project._id}`
       )
       .then((res) => {
         console.log("DELETE SR RES:", res.data);
         setSystemRequirements(res.data.data);
+        window.location.reload();
+      })
+      .catch((err) => {
+        console.log("DELETE SR ERR:", err);
+      });
+  }
+  async function deleteNonFunctionalRequirement(systemRequirementId) {
+    await axios
+      .delete(
+        `${process.env.NEXT_PUBLIC_BASE_URL_API}/non-functional-requirements/${systemRequirementId}?engineerId=${engineer?._id}&projectId=${props?.project._id}`
+      )
+      .then((res) => {
+        console.log("DELETE SR RES:", res.data);
+        // setSystemRequirements(res.data.data);
+        window.location.reload();
       })
       .catch((err) => {
         console.log("DELETE SR ERR:", err);
@@ -142,14 +165,36 @@ export default function EngineerSystemRequirements(props) {
 
   return (
     <>
-      {/* ADD SYSTEM REQUIREMENT MODAL */}
+      {/* ADD NON-FUNCTIONAL REQUIREMENT MODAL */}
       <Modal
-        isOpen={isModalOpen}
-        onRequestClose={closeModal}
+        isOpen={isNFRModalOpen}
+        onRequestClose={closeNFRModal}
         className="bg-red-500 max-w-lg mx-auto mt-[120px]"
       >
         <div className="h-[400px] shadow-lg p-14 bg-white text-center">
-          <h2 className="font-semibold text-lg">Add System Requirement</h2>
+          <h2 className="font-semibold text-lg">
+            Add Non-functional Requirement
+          </h2>
+          <h2 className="text-sm text-left mt-4">
+            <h1 className="font-semibold">User Requirement:</h1>{" "}
+            {userRequirement?.requirement}
+          </h2>
+          <AddSNonFunctionalRequirementForm
+            userRequirementId={userRequirementId}
+            systemRequirements={systemRequirements}
+            setSystemRequirements={setSystemRequirements}
+            project={props?.project}
+          />
+        </div>
+      </Modal>
+      {/* ADD FUNCTIONAL REQUIREMENT MODAL */}
+      <Modal
+        isOpen={isFRModalOpen}
+        onRequestClose={closeFRModal}
+        className="bg-red-500 max-w-lg mx-auto mt-[120px]"
+      >
+        <div className="h-[400px] shadow-lg p-14 bg-white text-center">
+          <h2 className="font-semibold text-lg">Add Functional Requirement</h2>
           <h2 className="text-sm text-left mt-4">
             <h1 className="font-semibold">User Requirement:</h1>{" "}
             {userRequirement?.requirement}
@@ -254,10 +299,17 @@ export default function EngineerSystemRequirements(props) {
             <p className="text-sm max-w-sm">{userRequirement?.requirement}</p>
           </div>
           <button
-            onClick={openModal}
+            onClick={openFRModal}
             className="text-sm my-auto flex gap-2 border-gray-400 border-[.5px] border-dotted p-2"
           >
-            <span className="my-auto">Add new</span>
+            <span className="my-auto">Add Functional Requirement</span>
+            <FaPlus className="my-auto" />
+          </button>
+          <button
+            onClick={openNFRModal}
+            className="text-sm my-auto flex gap-2 border-gray-400 border-[.5px] border-dotted p-2"
+          >
+            <span className="my-auto">Add Non-Functional Requirement</span>
             <FaPlus className="my-auto" />
           </button>
         </div>
@@ -270,6 +322,9 @@ export default function EngineerSystemRequirements(props) {
                 Requirement
               </span>
               <span className="text-xs w-[187px] text-gray-400 uppercase">
+                Type
+              </span>
+              <span className="text-xs w-[187px] text-gray-400 uppercase">
                 Time Created
               </span>
               <span className="text-xs w-[187px] text-gray-400 uppercase">
@@ -277,7 +332,7 @@ export default function EngineerSystemRequirements(props) {
               </span>
             </div>
 
-            {systemRequirements?.length === 0 && (
+            {/* {userRequirement?.functionalRequirements?.length === 0 && (
               <div className="w-full mx-auto mt-10">
                 <Image
                   src={empty}
@@ -289,42 +344,84 @@ export default function EngineerSystemRequirements(props) {
                   It's lonely here... Try adding a user requirement.
                 </h3>
               </div>
+            )} */}
+
+            {userRequirement?.functionalRequirements?.map(
+              (systemRequirement) => (
+                <div
+                  onClick={() => {
+                    setCurrentItem(systemRequirement);
+                    // fetchSystemRequirements(systemRequirement._id);
+                    // setIsDetailModalOpen(true);
+                  }}
+                  key={systemRequirement._id}
+                  className="flex cursor-pointer gap-x-10 mt-7 border-b-[.5px] pb-3 justify-between min-w-[750px]"
+                >
+                  <span className="text-sm w-[187px]">
+                    {systemRequirement.requirement}
+                  </span>
+                  <span className="text-sm w-[187px]">Functional</span>
+                  <span className="text-sm w-[187px]">
+                    <ReactTimeAgo
+                      date={systemRequirement.createdAt}
+                      locale="en-US"
+                    />
+                  </span>
+                  <span className="text-sm w-[187px]">
+                    <button>
+                      <FaPencilAlt size={14} className="text-blue-500" />
+                    </button>
+                    <button
+                      onClick={() =>
+                        deleteSystemRequirement(systemRequirement._id)
+                      }
+                      className="ml-5"
+                    >
+                      <FaTrashAlt size={14} className="text-red-500" />
+                    </button>
+                  </span>
+                </div>
+              )
             )}
 
-            {systemRequirements?.map((systemRequirement) => (
-              <div
-                onClick={() => {
-                  setCurrentItem(systemRequirement);
-                  fetchSystemRequirements(systemRequirement._id);
-                  setIsDetailModalOpen(true);
-                }}
-                key={systemRequirement._id}
-                className="flex cursor-pointer gap-x-10 mt-7 border-b-[.5px] pb-3 justify-between min-w-[750px]"
-              >
-                <span className="text-sm w-[187px]">
-                  {systemRequirement.requirement}
-                </span>
-                <span className="text-sm w-[187px]">
-                  <ReactTimeAgo
-                    date={systemRequirement.createdAt}
-                    locale="en-US"
-                  />
-                </span>
-                <span className="text-sm w-[187px]">
-                  <button>
-                    <FaPencilAlt size={14} className="text-blue-500" />
-                  </button>
-                  <button
-                    onClick={() =>
-                      deleteSystemRequirement(systemRequirement._id)
-                    }
-                    className="ml-5"
-                  >
-                    <FaTrashAlt size={14} className="text-red-500" />
-                  </button>
-                </span>
-              </div>
-            ))}
+            {userRequirement?.nonFunctionalRequirements?.map(
+              (systemRequirement) => (
+                <div
+                  onClick={() => {
+                    setCurrentItem(systemRequirement);
+                    // fetchSystemRequirements(systemRequirement._id);
+                    // setIsDetailModalOpen(true);
+                  }}
+                  key={systemRequirement._id}
+                  className="flex cursor-pointer gap-x-10 mt-7 border-b-[.5px] pb-3 justify-between min-w-[750px]"
+                >
+                  <span className="text-sm w-[187px]">
+                    {systemRequirement.requirement}
+                  </span>
+                  <span className="text-sm w-[187px]">Non Functional</span>
+                  <span className="text-sm w-[187px]">
+                    <ReactTimeAgo
+                      date={systemRequirement.createdAt}
+                      locale="en-US"
+                    />
+                  </span>
+                  <span className="text-sm w-[187px]">
+                    <button>
+                      <FaPencilAlt size={14} className="text-blue-500" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        console.log(systemRequirement._id);
+                        deleteNonFunctionalRequirement(systemRequirement._id);
+                      }}
+                      className="ml-5"
+                    >
+                      <FaTrashAlt size={14} className="text-red-500" />
+                    </button>
+                  </span>
+                </div>
+              )
+            )}
 
             <ol className="mt-5 w-[750px] max-w-[750px]"></ol>
           </div>

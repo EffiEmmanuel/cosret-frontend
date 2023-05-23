@@ -9,7 +9,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AddSystemRequirementFormSchema from "./validation";
 
-export default function AddSystemRequirementForm(props) {
+export default function AddSNonFunctionalRequirementForm(props) {
   //   Get User Data
   const { engineer } = useContext(EngineerContext);
   const project = props.project;
@@ -24,7 +24,7 @@ export default function AddSystemRequirementForm(props) {
     // Send API request here
     await axios
       .post(
-        `${process.env.NEXT_PUBLIC_BASE_URL_API}/functional-requirements?userRequirementId=${userRequirementId}&projectId=${project?._id}&engineerId=${engineer?._id}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL_API}/non-functional-requirements?userRequirementId=${userRequirementId}&projectId=${project?._id}&engineerId=${engineer?._id}`,
         { requirement: values.requirement }
       )
       .then((res) => {
